@@ -21,6 +21,7 @@
     "strict": true,
     // Error when a value import is only used as a type
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "verbatimModuleSyntax": true
   }
 }
