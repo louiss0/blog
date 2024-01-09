@@ -2,16 +2,11 @@
 import Nav from '../components/Nav.astro';
 import HMF from '../layouts/HMF.astro';
 import { SITE_DESCRIPTION } from '../constants';
-import {
-  Center,
-  Container,
-  Heading,
-  Section,
-} from '@personal-projects/internal';
+
 import { COLLECTION_NAMES as COLLECTION_NAMES } from '../collections';
 import TopicLink from '../components/TopicLink.astro';
 import { executeIfElse, iterate, useTemplaterAndProjector } from '@forastro/utilities';
-import Icon from 'astro-icon';
+import {Icon } from 'astro-icon/components';
 import PostCard from '../components/PostCard.astro';
 
 const [LinkTemplater, LinkProjector] =
@@ -33,6 +28,9 @@ const SOCIAL_MEDIA_ICON_NAMES_AND_LINKS = Object.freeze([
 ] as const);
 
 import { getAllCollections } from '../utils';
+import { Center, Container } from '../components/base';
+import Section from '../components/Section.astro';
+import Heading from '../components/Heading.astro';
 
 const FIRST_POST_INDEX = 0;
 const FINAL_POST_INDEX = 5;
@@ -96,24 +94,16 @@ const LatestFivePosts = (
 <script src="/pagefind/pagefind-ui.js" is:inline></script>
 <script is:inline>
   
+  //! This code works because these scripts are persisted through out each page
+  
   document.addEventListener(
     'astro:page-load', 
-    getSetupPageFind(),
+    () => new PagefindUI({ element: '#search', showSubResults: true, }),
      {once:true}
   );
 
 
-//! This code works because these scripts are persisted through out each page
-function getSetupPageFind() {
-    
-  return () => {
 
-      new PagefindUI({ element: '#search', showSubResults: true, });
-
-
-};
-
-}
 </script>
 
 </Fragment>

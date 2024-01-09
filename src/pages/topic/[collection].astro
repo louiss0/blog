@@ -1,27 +1,24 @@
 ---
-import type { InferGetStaticPropsType, InferGetStaticParamsType } from 'astro';
-import { COLLECTION_NAMES, type Category } from '../../collections';
+import type { InferGetStaticPropsType, InferGetStaticParamsType } from "astro";
+import { COLLECTION_NAMES, type Category } from "../../collections";
 import {
   getCollection,
   type CollectionEntry,
   type CollectionKey,
-} from 'astro:content';
-import Default from '../../layouts/Default.astro';
-import {
-  Center,
-  Container,
-  Heading,
-  Section,
-  TwilightFlipSwitch,
-} from '@personal-projects/internal';
-import Icon from 'astro-icon';
-import { iterate, useTemplaterAndProjector } from '@forastro/utilities';
+} from "astro:content";
+import Default from "../../layouts/Default.astro";
+import Heading from "../../components/Heading.astro";
+import Section from "../../components/Section.astro";
+import { Center, Container } from "../../components/base";
+import Icon from "astro-icon/components";
+import { iterate, useTemplaterAndProjector } from "@forastro/utilities";
+import TwilightFlipSwitch from "../../components/TwilightFlipSwitch.vue";
 
 type CategoryCollectionType = `${Category}Collection`;
 
 type EntryDataList = Array<
-  CollectionEntry<CollectionKey>['data'] & {
-    slug: CollectionEntry<CollectionKey>['slug'];
+  CollectionEntry<CollectionKey>["data"] & {
+    slug: CollectionEntry<CollectionKey>["slug"];
   }
 >;
 
@@ -32,13 +29,13 @@ export const getStaticPaths = async () => {
         collectionName,
         getCollection(
           collectionName,
-          import.meta.env.PROD ? (entry) => !entry.data.draft : undefined,
-        ),
+          import.meta.env.PROD ? (entry) => !entry.data.draft : undefined
+        )
       ),
     new Map<
       (typeof COLLECTION_NAMES)[number],
       ReturnType<typeof getCollection>
-    >(),
+    >()
   );
 
   return await Promise.all(
@@ -59,7 +56,7 @@ export const getStaticPaths = async () => {
             return carry;
           },
 
-          new Map<CategoryCollectionType, EntryDataList | undefined>(),
+          new Map<CategoryCollectionType, EntryDataList | undefined>()
         );
 
       return {
@@ -71,7 +68,7 @@ export const getStaticPaths = async () => {
           EntryDataList | undefined
         >,
       };
-    }),
+    })
   );
 };
 
@@ -82,7 +79,7 @@ const { collection } = Astro.params;
 
 const topic = `${collection[0].toUpperCase()}${collection.slice(1)}`;
 
-type PostLinkProps = Record<'title' | 'slug', string>;
+type PostLinkProps = Record<"title" | "slug", string>;
 
 const [PostLinkTemplater, PostLinkProjector] =
   useTemplaterAndProjector<PostLinkProps>();
@@ -113,20 +110,20 @@ const [TopicSectionTemplater, TopicSectionProjector] =
         This is all of the posts that I have for <span class="capitalize"
           >{topic}</span
         >. <br />
-         I have decided to organize them into three kinds Tutorials, Posts and
-        Series. <br />
-         A Segment is a set of posts that revolve around a concept. <br />
-         A Tutorial is a post that teaches someone how to do something. <br />
-         A post is just a post about some thing it could just be a story about
-        what I did.
+        I have decided to organize them into three kinds Tutorials, Posts and Series.
+        <br />
+        A Segment is a set of posts that revolve around a concept. <br />
+        A Tutorial is a post that teaches someone how to do something. <br />
+        A post is just a post about some thing it could just be a story about what
+        I did.
       </p>
     </Center>
   </header>
 
   <main>
-    <TopicSectionProjector title={'posts'} collection={StandaloneCollection} />
-    <TopicSectionProjector title={'Tutorial'} collection={TutorialCollection} />
-    <TopicSectionProjector title={'series'} collection={SegmentCollection} />
+    <TopicSectionProjector title={"posts"} collection={StandaloneCollection} />
+    <TopicSectionProjector title={"Tutorial"} collection={TutorialCollection} />
+    <TopicSectionProjector title={"series"} collection={SegmentCollection} />
   </main>
 </Default>
 
@@ -135,9 +132,9 @@ const [TopicSectionTemplater, TopicSectionProjector] =
     ({ slug, title }) => (
       <a
         class:list={[
-          'group px-6 py-3 outline-none',
-          '[&:is(:hover,:focus)]:(text-gray-50 bg-blue-600)',
-          'dark:(text-gray-50 [&:is(:hover,:focus)]:(text-gray-900 bg-blue-400))',
+          "group px-6 py-3 outline-none",
+          "[&:is(:hover,:focus)]:(text-gray-50 bg-blue-600)",
+          "dark:(text-gray-50 [&:is(:hover,:focus)]:(text-gray-900 bg-blue-400))",
         ]}
         href={`/${collection}/${slug}`}
       >
@@ -146,8 +143,8 @@ const [TopicSectionTemplater, TopicSectionProjector] =
           <div
             data-wrapper
             class:list={[
-              'transition-transform duration-200',
-              'group-focus:translate-x-2 group-hover:translate-x-2',
+              "transition-transform duration-200",
+              "group-focus:translate-x-2 group-hover:translate-x-2",
             ]}
           >
             <Icon name="mdi:arrow-right" class="w-6 sm:w-4" />
