@@ -419,5 +419,43 @@
         ]
       }
     }
+  ],
+  "frontMatter.content.publicFolder": {
+    "path": "src/assets",
+    "relative": true
+  },
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "astro",
+      "path": "[[workspace]]/src/content/astro"
+    },
+    {
+      "title": "css",
+      "path": "[[workspace]]/src/content/css"
+    },
+    {
+      "title": "food-for-thought",
+      "path": "[[workspace]]/src/content/food-for-thought"
+    },
+    {
+      "title": "html",
+      "path": "[[workspace]]/src/content/html"
+    },
+    {
+      "title": "react",
+      "path": "[[workspace]]/src/content/react"
+    },
+    {
+      "title": "typescript",
+      "path": "[[workspace]]/src/content/typescript"
+    },
+    {
+      "title": "vue",
+      "path": "[[workspace]]/src/content/vue"
+    },
+    {
+      "title": "web-development",
+      "path": "[[workspace]]/src/content/web-development"
+    }
   ]
 }
