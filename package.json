@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@astrojs/markdoc": "^0.8.2",
 		"@astrojs/rss": "^4.0.1",
+		"@astrojs/sitemap": "^3.0.4",
 		"@astrojs/vue": "^4.0.8",
 		"@fontsource-variable/source-code-pro": "^5.0.17",
 		"@fontsource/titillium-web": "^5.0.18",
