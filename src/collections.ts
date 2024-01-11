@@ -1,4 +1,4 @@
-import { baseSchema } from "@personal-projects/internal";
+import { baseSchema } from "./schemas";
 import { z, defineCollection, type SchemaContext } from "astro:content";
 import { Enum, type InferValue } from "better-enums";
 

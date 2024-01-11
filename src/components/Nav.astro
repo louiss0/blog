@@ -1,8 +1,8 @@
 ---
-import { TwilightFlipSwitch } from '@personal-projects/internal';
-import Icon from 'astro-icon';
-import SearchCollections from './SearchCollections.vue';
-import BaseButton from './BaseButton.vue';
+import TwilightFlipSwitch from "../components/TwilightFlipSwitch.vue";
+import { Icon } from "astro-icon/components";
+import SearchCollections from "./SearchCollections.vue";
+import BaseButton from "./BaseButton.vue";
 ---
 
 <nav class="text-blue-600 px-3 py-6 lg:(px-18 py-6)">
@@ -10,7 +10,7 @@ import BaseButton from './BaseButton.vue';
     <TwilightFlipSwitch client:load />
     <div data-element="rss-and-search" class="flex gap-12">
       <BaseButton href="/rss.xml" aria-label="RSS Feed">
-        <Icon name="mdi:rss" class="w-12" />
+        <Icon name="mdi:rss" class="text-12" />
       </BaseButton>
       <SearchCollections client:idle />
     </div>

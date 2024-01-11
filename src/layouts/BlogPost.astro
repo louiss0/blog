@@ -1,22 +1,18 @@
 ---
-import {
-  Container,
-  Heading,
-  LocaleTime,
-  TwilightFlipSwitch,
-  Center,
-} from '@personal-projects/internal';
-import Copyright from '../components/Copyright.astro';
-import Default from './Default.astro';
-import { executeIfElse, useTemplaterAndProjector } from '@forastro/utilities';
-import { Image } from 'astro:assets';
+import { Container, LocaleTime, Center } from "../components/base";
+import Copyright from "../components/Copyright.astro";
+import Default from "./Default.astro";
+import { executeIfElse, useTemplaterAndProjector } from "@forastro/utilities";
+import { Image } from "astro:assets";
 import {
   attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension,
   type MarkdownHeadingWithSubHeadings,
-} from '../utils';
-import BaseButton from '../components/BaseButton.vue';
-import type { MarkdownHeading } from 'astro';
-import { buildTableOfContentsData } from '../utils';
+} from "../utils";
+import BaseButton from "../components/BaseButton.vue";
+import type { MarkdownHeading } from "astro";
+import { buildTableOfContentsData } from "../utils";
+import Heading from "../components/Heading.astro";
+import TwilightFlipSwitch from "../components/TwilightFlipSwitch.vue";
 
 interface Props {
   title: string;
@@ -89,7 +85,7 @@ const [BlogIntroTemplater, BlogIntroProjector] = useTemplaterAndProjector();
           src={heroImage}
           class="object-contain w-full h-full"
           alt={attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension(
-            heroImage.src,
+            heroImage.src
           )}
         />
       </div>
@@ -111,7 +107,7 @@ const [BlogIntroTemplater, BlogIntroProjector] = useTemplaterAndProjector();
                 Created At
                 <LocaleTime dateString={createDate} />
               </div>
-            ),
+            )
           )
         }
 
@@ -146,7 +142,7 @@ const [BlogIntroTemplater, BlogIntroProjector] = useTemplaterAndProjector();
                 <details class="text-[length:--step-1]">
                   <summary
                     class="px-3 py-1"
-                    class:list={depth === 2 ? 'font-bold' : 'font-semibold'}
+                    class:list={depth === 2 ? "font-bold" : "font-semibold"}
                   >
                     <a href={`#${slug}`}>{text}</a>
                   </summary>
@@ -157,12 +153,12 @@ const [BlogIntroTemplater, BlogIntroProjector] = useTemplaterAndProjector();
                 <a
                   href={`#${slug}`}
                   class="block px-3 py-1"
-                  class:list={depth === 2 ? 'font-bold' : 'font-semibold'}
+                  class:list={depth === 2 ? "font-bold" : "font-semibold"}
                 >
                   {text}
                 </a>
-              ),
-            ),
+              )
+            )
           )}
         </details>
       </Container>

@@ -1,21 +1,21 @@
 ---
-import { useTemplaterAndProjector } from '@forastro/utilities';
-import { LocaleTime } from '@personal-projects/internal';
-import Icon from 'astro-icon';
-import { Image } from 'astro:assets';
-import type { CollectionKey, ImageFunction, z } from 'astro:content';
-import { attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension } from '../utils';
-import BaseButton from './BaseButton.vue';
-import type { Post } from '../collections';
+import { useTemplaterAndProjector } from "@forastro/utilities";
+import { LocaleTime } from "../components/base";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import type { CollectionKey, ImageFunction, z } from "astro:content";
+import { attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension } from "../utils";
+import BaseButton from "./BaseButton.vue";
+import type { Post } from "../collections";
 
 type Props = {
-  type?: 'long' | 'short';
+  type?: "long" | "short";
   collection: CollectionKey;
   slug: string;
   imageSrc: z.infer<ReturnType<ImageFunction>>;
 } & Pick<
   Post,
-  'title' | 'description' | 'pubDate' | 'updateDate' | 'createDate'
+  "title" | "description" | "pubDate" | "updateDate" | "createDate"
 >;
 
 const {
@@ -36,7 +36,7 @@ const [LongCardTemplater, LongCardProjector] = useTemplaterAndProjector();
 
 const imageAlt =
   attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension(
-    imageSrc.src,
+    imageSrc.src
   );
 ---
 
@@ -141,4 +141,4 @@ const imageAlt =
   </article>
 </ShortCardTemplater>
 
-{type === 'short' ? <ShortCardProjector /> : <LongCardProjector />}
+{type === "short" ? <ShortCardProjector /> : <LongCardProjector />}
