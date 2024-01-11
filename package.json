@@ -6,9 +6,9 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "astro build && pnpm dlx pagefind --site dist --root-selector body",
 		"check": "astro check",
-		"preview": "astro preview"
+		"preview": "pnpm run build && astro preview && cp -r dist/pagefind public"
 	},
 	"dependencies": {
 		"@code-fixer-23/cn-efs": "^2.2.4",
