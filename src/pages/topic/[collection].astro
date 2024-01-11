@@ -13,6 +13,7 @@ import { Center, Container } from "../../components/base";
 import { Icon } from "astro-icon/components";
 import { iterate, useTemplaterAndProjector } from "@forastro/utilities";
 import TwilightFlipSwitch from "../../components/TwilightFlipSwitch.vue";
+import BaseButton from "../../components/BaseButton.vue";
 
 type CategoryCollectionType = `${Category}Collection`;
 
@@ -97,9 +98,14 @@ const [TopicSectionTemplater, TopicSectionProjector] =
   title={topic}
   description={`This is all the posts related to this topic ${collection} `}
 >
-  <div class="px-12 py-4">
-    <TwilightFlipSwitch client:idle />
-  </div>
+  <nav class="px-12 py-4">
+    <Container>
+      <div class="flex justify-between">
+        <TwilightFlipSwitch client:idle />
+        <BaseButton href="/">Go Home</BaseButton>
+      </div>
+    </Container>
+  </nav>
   <header class="py-6 px-10 sm:(py-8 px-12)">
     <Center gapClass="gap-8">
       <Heading level={1}>{topic}</Heading>
