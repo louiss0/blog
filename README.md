@@ -1,105 +1,68 @@
-<!-- markdownlint-disable-file MD033 -->
-
-# Blog
-
-This project is a blog site that is created to display articles about various topics that
-I talk about.
-It has only an index page which is created to introduce the site and make the user click on links
-to navigate the site.
-The two other pages are dynamic pages.
-The `topic/[slug]` page is created to generate a page that introduces all posts related to a topic.
-The `[collection]/[slug]` page is created to generate a page
-for each post.
-
-**To create a page.**
-
-1. Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>
-2. Select **Front Mattter create content from defined type or template**
-3. Select from the list of folders shown.
-4. Select a template.
-    - **Standalone** is for ramdom info.
-    - **Tutorial** is for step by step **tutorials**.
-    - **Series** is for a set of posts related to each other .
-
-When writing a blog post you want to place the server right next to you.
-I use a vs code extension called Browser Lite to write blog posts in VS code.
-It's useful for making sure that my posts are nice to look at.
-
-**To use Browser Lite.**
-
-1. Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>
-2. Select **Browser Lite: Open**
-
-You are given the option to open it when you start your server.
-
-**To start the server.**
+# Astro Starter Kit: Blog
 
 ```sh
-pnpm run dev
+pnpm create astro@latest -- --template blog
 ```
 
-This project uses pagefind for search indexes it works whenever you build the website.
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
 
-- The build command executes `astro build`.
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-- After that it executes the command for indexing the site.
+![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
 
-    `pnpm dlx pagefind --site dist --root-selector body`
+Features:
 
-- Then it copies the folder created by pagefind into the `public/` folder.
+- ✅ Minimal styling (make it your own!)
+- ✅ 100/100 Lighthouse performance
+- ✅ SEO-friendly with canonical URLs and OpenGraph data
+- ✅ Sitemap support
+- ✅ RSS Feed support
+- ✅ Markdown & MDX support
 
-    `cp -r dist/pagefind public`.
+## 🚀 Project Structure
 
-The preview script is configured to first build the site then execute `astro preview`.
-The main config file for the website is found under. `src/collections.ts`
- This was done to make sure that I could use the `COLLECTION_NAMES`,
-an array made from the schema in other files.
+Inside of your Astro project, you'll see the following folders and files:
 
-## Features
+```text
+├── public/
+├── src/
+│   ├── components/
+│   ├── content/
+│   ├── layouts/
+│   └── pages/
+├── astro.config.mjs
+├── README.md
+├── package.json
+└── tsconfig.json
+```
 
-This blog site is a site that is created with three pages each being a feature.
-The [Intro Page](#intro-page) is the page that the user uses to navigate the site
-and search for single posts.
-The [Topic Page](#topic-page) is made to generate a page based on titles of posts related to a topic.
-The [Post Page](#post-page) is the page that is used to generate a new page based on each post.
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-The user can choose between light and dark mode throughout each page.
-There is also a way for the user to subscribe to see the feed using RSS.
-The user can search for information based on words and titles.
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-### Intro Page
+The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
 
-The intro page is the static page that introduces the site.
-It's header has a navbar that allows the user to.
-Click on buttons to.
+Any static assets, like images, can be placed in the `public/` directory.
 
-- Toggle dark mode.
-- Navigate to the RSS Feed.
-- Toggle the search index.
+## 🧞 Commands
 
-The header has the introduction to the site and hides
-the search index input. The user has to click on the
-button with the **search icon** to show it. The first section shows the latest 5 posts.
-The first one is shown on the left in as a giant card.
-The last four are shown on the right as a small card.
-The second section has links to all the topic pages.
-The footer is a section that first asks the user to either subscribe to the RSS Feed or find me online.
-At the bottom of it it features an icon that leads to each social media page that features my profile.
+All commands are run from the root of the project, from a terminal:
 
-### Topic Page
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `pnpm install`             | Installs dependencies                            |
+| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
+| `pnpm build`           | Build your production site to `./dist/`          |
+| `pnpm preview`         | Preview your build locally, before deploying     |
+| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `pnpm astro -- --help` | Get help using the Astro CLI                     |
 
-The topic page is a page that allows the user to toggle
-dark mode or go back home using the navbar.
-It uses the header to introduce the topic.
-Then it has three sections.
+## 👀 Want to learn more?
 
-- Standalone links to standalone posts
-- Tutorial links to tutorials.
-- Series links to posts that are related to a series.
+Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
 
-### Post Page
+## Credit
 
-The post page is the page that allows it's user to toggle dark mode or go home.
-In the navbar then as you navigate down you see an image that is related to the post.
-Then you see a Table of Contents and the rest is the
-contents of the article.
+This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
