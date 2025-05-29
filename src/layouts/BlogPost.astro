@@ -1,85 +1,167 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import { Container, LocaleTime, Center } from "../components/base";
+import Copyright from "../components/Copyright.astro";
+import Default from "./Default.astro";
+import { executeIfElse, useTemplaterAndProjector } from "@forastro/utilities";
+import { Image } from "astro:assets";
+import {
+  attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension,
+  type MarkdownHeadingWithSubHeadings,
+} from "../utils";
+import BaseButton from "../components/BaseButton.vue";
+import type { MarkdownHeading } from "astro";
+import { buildTableOfContentsData } from "../utils";
+import Heading from "../components/Heading.astro";
+import TwilightFlipSwitch from "../components/TwilightFlipSwitch.vue";
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props {
+  title: string;
+  collection: string;
+  slug: string;
+  description: string;
+  pubDate?: string;
+  createDate: string;
+  updateDate?: string;
+  heroImage: ImageMetadata;
+  headings: Array<MarkdownHeading>;
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  headings,
+  slug,
+  collection,
+  title,
+  createDate,
+  description,
+  pubDate,
+  updateDate,
+  heroImage,
+} = Astro.props;
+
+const [UpdatedDateTemplater, UpdatedDateProjector] = useTemplaterAndProjector();
+const [PublishedDateTemplater, PublishedDateProjector] =
+  useTemplaterAndProjector();
+
+const [TableOfContentsTemplater, TableOfContentsProjector] =
+  useTemplaterAndProjector<{
+    formattedTOC: Array<MarkdownHeadingWithSubHeadings>;
+  }>();
+
+const [BlogIntroTemplater, BlogIntroProjector] = useTemplaterAndProjector();
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<Default {...{ title, description }}>
+  <header class="px-12 py-6">
+    <nav>
+      <Container maxWidthClass="max-w-screen-lg">
+        <div class="flex justify-between items-center">
+          <TwilightFlipSwitch client:idle />
+          <BaseButton href="/">Go Home</BaseButton>
+        </div>
+      </Container>
+    </nav>
+    <BlogIntroProjector />
+  </header>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+  <article
+    data-pagefind-body
+    transition:name={`${collection}-${slug}`}
+    transition:animate="initial"
+    class="w-4/5 mx-auto prose prose-slate dark:prose-invert [&>pre]:[font-size:.60em] lg:[&>pre]:[font-size:.70em]"
+  >
+    <slot />
+  </article>
+
+  <footer class="px-12 py-6">
+    <Copyright />
+  </footer>
+</Default>
+
+<BlogIntroTemplater>
+  <Container>
+    <div class="py-6 px-3 flex flex-col gap-8">
+      <div class="md:h-94 brightness-90 dark:brightness-120">
+        <Image
+          src={heroImage}
+          class="object-contain w-full h-full"
+          alt={attemptToCreateSpacedStringFromLowerCaseAndDashedFileNameByCapturingTheFilenameAndExtension(
+            heroImage.src
+          )}
+        />
+      </div>
+
+      <Center gapClass="gap-4">
+        <Heading level={1}>{title}</Heading>
+
+        {
+          executeIfElse(
+            !!(pubDate || updateDate),
+            () => (
+              <div class="flex gap-2">
+                {pubDate && <PublishedDateProjector />}
+                {updateDate && <UpdatedDateProjector />}
+              </div>
+            ),
+            () => (
+              <div class="flex gap-2">
+                Created At
+                <LocaleTime dateString={createDate} />
+              </div>
+            )
+          )
+        }
+
+        <UpdatedDateTemplater>
+          Updated <time>{updateDate}</time>
+        </UpdatedDateTemplater>
+
+        <PublishedDateTemplater>
+          Published <time>{pubDate}</time>
+        </PublishedDateTemplater>
+      </Center>
+
+      <TableOfContentsProjector
+        formattedTOC={buildTableOfContentsData(headings)}
+      />
+    </div>
+  </Container>
+</BlogIntroTemplater>
+
+<TableOfContentsTemplater>
+  {
+    ({ formattedTOC }) => (
+      <Container>
+        <details>
+          <summary class="px-4 py-2 text-[length:--step-2] font-extrabold capitalize">
+            Table of contents
+          </summary>
+          {formattedTOC.map(({ slug, text, subHeadings, depth }) =>
+            executeIfElse(
+              subHeadings.length > 0,
+              () => (
+                <details class="text-[length:--step-1]">
+                  <summary
+                    class="px-3 py-1"
+                    class:list={depth === 2 ? "font-bold" : "font-semibold"}
+                  >
+                    <a href={`#${slug}`}>{text}</a>
+                  </summary>
+                  <TableOfContentsProjector formattedTOC={subHeadings} />
+                </details>
+              ),
+              () => (
+                <a
+                  href={`#${slug}`}
+                  class="block px-3 py-1"
+                  class:list={depth === 2 ? "font-bold" : "font-semibold"}
+                >
+                  {text}
+                </a>
+              )
+            )
+          )}
+        </details>
+      </Container>
+    )
+  }
+</TableOfContentsTemplater>

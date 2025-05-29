@@ -1,97 +1,293 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { executeIf, useTemplaterAndProjector, executeIfElse, iterate } from '@forastro/utilities';
+import Nav from '../components/Nav.astro';
+import HMF from '../layouts/HMF.astro';
+import { SITE_DESCRIPTION } from '../constants';
+import TopicLink from '../components/TopicLink.astro';
+import { COLLECTION_NAMES as COLLECTION_NAMES } from '../collections';
+import {Icon } from 'astro-icon/components';
+import PostCard from '../components/PostCard.astro';
+import { getAllCollections } from '../utils';
+import { Center, Container } from '../components/base';
+import Section from '../components/Section.astro';
+import Heading from '../components/Heading.astro';
 
-import { useTemplaterAndProjector } from "@forastro/utilities";
+const [LinkTemplater, LinkProjector] =
+  useTemplaterAndProjector<Record<'text' | 'href', string>>("Link");
 
-const [Templater, Projector] = useTemplaterAndProjector<{ msg: string }>();
+const SOCIAL_MEDIA_ICON_NAMES_AND_LINKS = Object.freeze([
+  {
+    icon: 'fa:twitter-square',
+    link: 'https://twitter.com/SheltonLouisX',
+  },
+  {
+    icon: 'fa:github',
+    link: 'https://github.com/louiss0',
+  },
+  {
+    icon: 'fa:linkedin-square',
+    link: 'https://www.linkedin.com/in/shelton-louis-1163b6142',
+  },
+] as const);
+
+const FIRST_POST_INDEX = 0;
+const FINAL_POST_INDEX = 5;
+const LatestFivePosts = (
+  await getAllCollections(
+    import.meta.env.PROD
+    ? (entry)=>  !entry.data.draft
+    : undefined
+  )
+).sort(
+  (entryA, entryB)=>
+   Date.parse(entryA.data.pubDate ?? '') - Date.parse(entryB.data.pubDate ?? '')
+  )
+.slice(FIRST_POST_INDEX, FINAL_POST_INDEX)
+.map((entry) => (
+      {
+        slug: entry.slug,
+        collection: entry.collection,
+      ...entry.data
+     }
+  )
+);
+
+
 ---
 
-<Templater>
-    {
-        ({ msg }) => {
-            return (
-                <>
-                    <h1>🧑‍🚀 Hello, Astronaut! {msg} </h1>
-                    <p>
-                        Welcome to the official{" "}
-                        <a href="https://astro.build/">Astro</a>
-                        blog starter template. This template serves as a
-                        lightweight, minimally-styled starting point for anyone
-                        looking to build a personal website, blog, or portfolio
-                        with Astro.
-                    </p>
-                    <p>
-                        This template comes with a few integrations already
-                        configured in your
-                        <code>astro.config.mjs</code> file. You can customize
-                        your setup with
-                        <a href="https://astro.build/integrations">
-                            Astro Integrations
-                        </a>{" "}
-                        to add tools like Tailwind, React, or Vue to your
-                        project.
-                    </p>
-                    <p>
-                        Here are a few ideas on how to get started with the
-                        template:
-                    </p>
-                    <ul>
-                        <li>
-                            Edit this page in <code>src/pages/index.astro</code>
-                        </li>
-                        <li>
-                            Edit the site header items in{" "}
-                            <code>src/components/Header.astro</code>
-                        </li>
-                        <li>
-                            Add your name to the footer in{" "}
-                            <code>src/components/Footer.astro</code>
-                        </li>
-                        <li>
-                            Check out the included blog posts in{" "}
-                            <code>src/content/blog/</code>
-                        </li>
-                        <li>
-                            Customize the blog post page layout in{" "}
-                            <code>src/layouts/BlogPost.astro</code>
-                        </li>
-                    </ul>
-                    <p>
-                        Have fun! If you get stuck, remember to
-                        <a href="https://docs.astro.build/">read the docs</a>
-                        or{" "}
-                        <a href="https://astro.build/chat">
-                            join us on Discord
-                        </a>{" "}
-                        to ask questions.
-                    </p>
-                    <p>
-                        Looking for a blog template with a bit more personality?
-                        Check out
-                        <a href="https://github.com/Charca/astro-blog-template">
-                            astro-blog-template
-                        </a>
-                        by{" "}
-                        <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-                    </p>
-                </>
-            );
-        }
-    }
-</Templater>
+<LinkTemplater>
+  {
+    ({ text, href }) => (
+      <a
+        class:list={[
+          'text-blue-600 outline-none',
+          'underline underline-current',
+          '[&:is(:hover,:focus-visible)]:(text-blue-400 underline-offset-5)',
+        ]}
+        href={href}
+      >
+        {text}
+      </a>
+    )
+  }
+</LinkTemplater>
 
-<html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <Header />
-        <main>
-            <Projector msg="Wow" />
-        </main>
-        <Footer />
-    </body>
-</html>
+
+
+<HMF title="Home" description={SITE_DESCRIPTION}>
+
+<Fragment slot="head">
+
+<style>
+  :root {
+    --pagefind-ui-primary: inherit;
+    --pagefind-ui-text: currentColor;
+    --pagefind-ui-background: inherit;
+    --pagefind-ui-border: currentColor;
+    --pagefind-ui-font: inherit;
+  }
+</style>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+
+  //! This code works because these scripts are persisted through out each page
+
+  document.addEventListener(
+    'astro:page-load',
+    () => new PagefindUI({ element: '#search', showSubResults: true, }),
+     {once:true}
+  );
+
+
+
+</script>
+
+</Fragment>
+
+  <Fragment slot="header">
+    <Nav />
+    <Container>
+      <div
+        id="search"
+        class="transition-transform duration-200 scale-0 invisible"
+      >
+      </div>
+    </Container>
+  </Fragment>
+  <Section title="Welcome to. Shelton’s Web Blog">
+    <p class="text-center leading-12">
+      Welcome to my blog. My name is <LinkProjector
+        href="https://www.github.com/louiss0"
+        text="Shelton Louis"
+      />.
+      <br />
+       This blog is about all thelibraries and frameworks that I use.<br />
+       I plan to update this blog weekly or at least monthly. <br />
+       I plan to mostly write facts that will help people. <br />
+       But I will occasionally write about my own opinions with a tag called
+      food for thought #fft.
+    </p>
+  </Section>
+  <Section title="latest posts" class="px-16 py-8 gap-12">
+    <div
+      data-element="posts-layout--sm-lg"
+      class:list={['py-6', 'lg:(w-4/5 mx-auto)', 'xl:hidden']}
+    >
+      <div
+        data-content
+        class:list={[
+          'grid gap-12 grid-rows-[auto_repeat(4,15rem)]',
+          'sm:grid-rows-[auto_repeat(4,10rem)]',
+          'lg:grid-rows-none',
+        ]}
+      >
+        {executeIfElse({
+
+           condition: LatestFivePosts.length === 0,
+
+           ifCb:()=> <Center>No posts yet</Center>,
+
+           elseCb: ()=>
+           iterate(
+          LatestFivePosts,
+          (post, info) => {
+
+          return executeIfElse({
+
+           condition:info.isFirst,
+
+          ifCb:()=>
+            <PostCard
+              type="long"
+              imageSrc={post.heroImage}
+              title={post.title},
+              description={post.description}
+              slug={post.slug}
+              collection={post.collection}
+              createDate={post.createDate}
+              pubDate={post.pubDate}
+              updateDate={post.updateDate}
+            />,
+
+          elseCb:()=>
+            <PostCard
+              type="short"
+              imageSrc={post.heroImage}
+              title={post.title},
+              description={post.description}
+              slug={post.slug}
+              collection={post.collection}
+              createDate={post.createDate}
+              pubDate={post.pubDate}
+              updateDate={post.updateDate}
+              />
+        })})
+
+        })}
+      </div>
+    </div>
+    <div data-element="posts-layout--xl" class:list={['hidden xl:block']}>
+      <div data-content class="grid grid-cols-2 gap-12">
+        {executeIfElse({
+            condition: LatestFivePosts.length === 0,
+
+           ifCb:()=> <Center>No posts yet</Center>,
+
+
+           elseCb() {
+
+             const [firstPost, ...restOfThePosts] = LatestFivePosts;
+
+            return (
+              <>
+                <div>
+                  <PostCard
+                  type='long'
+                  imageSrc={firstPost.heroImage}
+                  title={firstPost.title},
+                  slug={firstPost.slug}
+                  collection={firstPost.collection}
+                  description={firstPost.description}
+                  createDate={firstPost.createDate}
+                  pubDate={firstPost.pubDate}
+                  updateDate={firstPost.updateDate}/>
+                </div>
+
+                {executeIfElse({
+                  condition: restOfThePosts.length === 0,
+
+                  ifCb() {
+                    return <Center>More posts comming soon.</Center>;
+                  },
+
+                  elseCb() {
+                    return (
+                      <div class="flex flex-col gap-6">
+                        {restOfThePosts.map((post) => (
+                          <PostCard
+                            type='short'
+                            imageSrc={post.heroImage}
+                            title={post.title},
+                            description={post.description}
+                            slug={post.slug}
+                            collection={post.collection}
+                            createDate={post.createDate}
+                            pubDate={post.pubDate}
+                            updateDate={post.updateDate}/>
+                        ))}
+                      </div>
+                    );
+                  },
+                })}
+              </>
+            );
+          },
+
+        })
+
+        }
+      </div>
+    </div>
+  </Section>
+  <Section title="topics" class="lt-sm:px-16" titleClass="gap-8">
+    <Container>
+      <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          COLLECTION_NAMES.map((collectionName) => (
+            <TopicLink topic={collectionName} />
+          ))
+        }
+      </div>
+    </Container>
+  </Section>
+  <Fragment slot="footer">
+    <Container>
+      <Center gapClass="gap-6">
+        <Heading level={2}>Subscribe? or Chat</Heading>
+        <p class="text-center text-lg/9 font-semibold">
+          If you want to subscribe to my feed then click on this button. <br />
+           If you want to contact me please click on one of the links below. <br
+          />
+           Feel free to use the search button to find any post you want. <br />
+           Thank you for your time.
+        </p>
+        <div
+          data-element="social-media-icons"
+          class="px-8 py-12 text-blue-600 dark:text-blue-400"
+        >
+          <div data-content class="flex gap-16">
+            {
+              SOCIAL_MEDIA_ICON_NAMES_AND_LINKS.map(({ icon, link }) => (
+                <a href={link} aria-label={icon}>
+                  <Icon name={icon} class="text-12" />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </Center>
+    </Container>
+  </Fragment>
+</HMF>
