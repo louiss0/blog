@@ -32,8 +32,8 @@ if (!type) {
     throw new Error("The type you passed in is empty please pass in a type");
 }
 
-if (!SEVERITIES.values().includes(type)) {
-    throw new Error(`The type must be ${SEVERITIES.values().join(",")} `);
+if (!SEVERITIES.options.includes(type)) {
+    throw new Error(`The type must be ${SEVERITIES.options.join(",")} `);
 }
 
 if (!Astro.slots.has("default")) {

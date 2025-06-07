@@ -3,15 +3,15 @@ import InternalHeading from "../Heading.astro";
 import type { HTMLAttributes } from "astro/types";
 type AcceptableLevels = 1 | 2 | 3 | 4;
 
-type Props<T extends AcceptableLevels> = {
-  level: T;
-} & HTMLAttributes<`h${T}`>;
+type Props = {
+    level: AcceptableLevels;
+} & HTMLAttributes<"h1" | "h2" | "h3" | "h4">;
 
 const {
-  props: { level, id },
+    props: { level, id },
 } = Astro;
 ---
 
 <InternalHeading {level} {id} class="text-left">
-  <slot />
+    <slot />
 </InternalHeading>
