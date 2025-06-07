@@ -1,8 +1,0 @@
-
-export {
-  collections
-} from "../collections";
-
-
-
-
