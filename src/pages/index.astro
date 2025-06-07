@@ -1,5 +1,5 @@
 ---
-import { executeIf, useTemplaterAndProjector, executeIfElse, iterate } from '@forastro/utilities';
+import { useTemplaterAndProjector, executeIfElse, iterate, } from '@forastro/utilities';
 import Nav from '../components/Nav.astro';
 import HMF from '../layouts/HMF.astro';
 import { SITE_DESCRIPTION } from '../constants';
@@ -28,8 +28,8 @@ const SOCIAL_MEDIA_ICON_NAMES_AND_LINKS = Object.freeze([
     icon: 'fa:linkedin-square',
     link: 'https://www.linkedin.com/in/shelton-louis-1163b6142',
   },
-] as const);
 
+] as const);
 const FIRST_POST_INDEX = 0;
 const FINAL_POST_INDEX = 5;
 const LatestFivePosts = (
@@ -63,6 +63,7 @@ const LatestFivePosts = (
           'text-blue-600 outline-none',
           'underline underline-current',
           '[&:is(:hover,:focus-visible)]:(text-blue-400 underline-offset-5)',
+        ]}
         ]}
         href={href}
       >
